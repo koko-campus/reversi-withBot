@@ -1,9 +1,48 @@
 @charset "utf8";
 
-@import "../00.scss";
+$fb: 1000;
+$sb: 500;
+
+@mixin fb {
+	@media screen and (min-width: (#{$fb+1}px)) {
+		@content;
+	}
+}
+
+@mixin tb {
+	@media screen and (min-width: #{$sb+1}px) and (max-width: (#{$fb}px)) {
+		@content;
+	}
+}
+
+@mixin sb {
+	@media screen and (max-width: (#{$sb}px)) {
+		@content;
+	}
+}
+
+@mixin sbtb {
+	@media screen and (max-width: (#{$fb}px)) {
+		@content;
+	}
+}
+
+@mixin tbfb {
+	@media screen and (min-width: (#{$sb+1}px)) {
+		@content;
+	}
+}
+
+
+$headerHeight: 60;
+$footerHeight: 60;
+
 
 #reversi {
 	$ITEM_COUNT: 8;
+	max-width: 1200px;
+	margin: 25px auto;
+	padding: 25px;
 	#mainFrame {
 		#boardContainer {
 			position: relative;

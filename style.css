@@ -1,4 +1,9 @@
 @charset "UTF-8";
+#reversi {
+  max-width: 1200px;
+  margin: 25px auto;
+  padding: 25px;
+}
 #reversi #mainFrame #boardContainer {
   position: relative;
 }
