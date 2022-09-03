@@ -1,0 +1,381 @@
+@charset "utf8";
+
+@import "../00.scss";
+
+#reversi {
+	$ITEM_COUNT: 8;
+	#mainFrame {
+		#boardContainer {
+			position: relative;
+			#board {
+				display: grid;
+				grid-template-rows: repeat($ITEM_COUNT, 1fr);
+				grid-template-columns: repeat($ITEM_COUNT, 1fr);
+				width: 100%;
+				max-width: 500px;
+				margin: 50px auto;
+				border: 2px black solid;
+				aspect-ratio: 1 / 1;
+				div.cell {
+					position: relative;
+					width: 100%;
+					border: 1px white solid;
+					background-color: green;
+					box-sizing: border-box;
+					&::before {
+						content: "";
+						position: absolute;
+						inset: 5px;
+						@include sb {
+							inset: 3px;
+						}
+						border-radius: 50%;
+					}
+					&.white::before {
+						background-color: white;
+					}
+					&.black::before {
+						background-color: black;
+					}
+					&.likely {
+						background-color: rgba(green, 0.7);
+						cursor: pointer;
+					}
+				}
+			}
+			#onBoardAnnouncer {
+				position: absolute;
+				display: none;
+				z-index: 9;
+				overflow-y: auto;
+				scrollbar-width: none;
+				&::-webkit-scrollbar { 
+					display: none;
+				}
+				&.on {
+					inset: -25px 25px;
+					display: block;
+					color: white;
+					background-color: rgba(black, 0.8);
+					border-radius: 25px;
+				}
+				#resultContainer {
+					margin: 25px;
+					.title {
+						font-size: 20px;
+						font-weight: bold;
+						margin: 10px 0;
+					}
+					.GAMESET {
+						font-size: 25px;
+						font-weight: bold;
+						font-family: "游明朝";
+						letter-spacing: 3px;
+						margin: 10px 0;
+						text-align: center;
+					}
+					.blackWhiteBox {
+						display: flex;
+						flex-wrap: nowrap;
+						.blackBox, .whiteBox {
+							width: 50%;
+							@include sb {
+								min-height: 100px;
+							}
+							@include tbfb {
+								min-height: 150px;
+							}
+							display: flex;
+							flex-wrap: wrap;
+							align-content: flex-start;
+							padding: 10px;
+							div {
+								border-radius: 50%;
+								@include sb {
+									width: 10px;
+									margin: 2px;
+								}
+								@include tbfb {
+									margin: 3px;
+									width: 30px;
+								}
+								aspect-ratio: 1 / 1;
+							}
+						}
+						.blackBox {
+							background-color: white;
+							div {
+								background-color: black;
+							}
+						}
+						.whiteBox {
+							background-color: black;
+							div {
+								background-color: white;
+							}
+						}
+					}
+					.resultTextBox {
+						font-size: 25px;
+						font-weight: bold;
+						letter-spacing: 2px;
+						margin: 10px 0;
+						text-align: center;
+					}
+				}
+				#startButton {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					margin: 50px auto;
+					width: 150px;
+					height: 35px;
+					border: 1px black solid;
+					color: black;
+					background-color: pink;
+					cursor: pointer;
+					&:hover {
+						color: white;
+						background-color: red;
+					}	
+				}
+			}
+		}
+		#battlingField {
+			position: relative;
+			width: 100%;
+			height: 80px;
+			margin: 25px auto;
+			border: 1px black solid;
+			.myImgBox, .botImgBox {
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				max-height: 150px;
+				img.me, img.bot {
+					height: 100%;
+				}
+				&::before {
+					$Qheight: 50;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					position: absolute;
+					font-size: #{$Qheight}px;
+					width: #{$Qheight}px;
+					height: #{$Qheight}px;
+					font-weight: bold;
+					font-family: "consolas";
+					z-index: 1;
+					bottom: 70%;
+					left: 50%;
+					transform-origin: center #{$Qheight - 10}px;
+				}
+			}
+			.myImgBox {
+				left: 0;
+			}
+			.botImgBox {
+				right: 0;
+			}
+			&.solving {
+				.botImgBox {
+					&::before {
+						content: "?";
+						animation: solving 1s linear 0s infinite normal none running;
+						@keyframes solving {
+							from {
+								transform: rotate(-30deg);
+							}
+							50% {
+								
+								transform: rotate(30deg);
+							}
+							to {
+								transform: rotate(-30deg);
+							}
+						}
+					}
+				}
+			}
+			&.solved {
+				.botImgBox {
+					&::before {
+						content: "!";
+						color: red;
+					}
+				}
+			}
+			#botProgressor {
+				position: absolute;
+				top: calc(100% + 3px);
+				right: 0;
+				bottom: -10px;
+				left: 0;
+				transition: all 1s ease;
+			}
+		}
+		#annouceBoard {
+			font-size: 20px;
+			font-weight: bold;
+			text-align: center;
+			min-height: 50px;
+			padding: 25px;
+			border: 1px lightgray solid;
+		}
+	}
+	#settingFrame {
+		#settingImg, #settingBox {
+			position: fixed;
+
+		}
+		#settingImg {
+			width: 50px;
+			bottom: 10px;
+			left: 10px;
+			cursor: pointer;
+			z-index: 300;
+			&:hover {
+				animation: settingHover 10s ease 0s infinite normal running;
+				@keyframes settingHover {
+					from {
+						transform: rotate(0deg);
+					}
+					50% {
+						transform: rotate(360deg);
+					}
+					to {
+						transform: rotate(0deg);
+					}
+				}
+			}
+			&.on {
+				$settingMargin: 15;
+				animation: settingRotate 3s ease 0s infinite normal running;
+				@keyframes settingRotate {
+					from {
+						transform: rotate(0deg);
+					}
+					30%, 40% {
+						transform: rotate(-180deg);
+					}
+					to {
+						transform: rotate(720deg);
+					}
+				}
+				& + #settingBox {
+					display: block;
+					top: #{$headerHeight + $settingMargin}px;
+					right: #{$settingMargin + 5}px;
+					bottom: #{$settingMargin + 5}px;
+					left: #{$settingMargin + 5}px;
+					border: 2px black solid;
+					border-radius: 10px;
+					background-color: rgba(white, 0.95);
+				}
+			}
+			
+		}
+		#settingBox {
+			inset: 100% 100% 0 0;
+			transition: all 0.5s ease;
+			overflow-y: auto;
+			scrollbar-width: 0;
+			z-index: 99;
+			&::-webkit-scrollbar {
+				display: none;
+			}
+			#settingAdjuster {
+				max-width: 700px;
+				margin: 0 auto;
+				padding: 25px;
+				.title {
+					font-family: bold;
+					margin: 50px 0 10px 0;
+					&::before {
+						content: "★";
+						margin-right: 10px;
+					}
+				}
+				#yourColorBox {
+					display: flex;
+					flex-wrap: nowrap;
+					width: 100%;
+					max-width: 300px;
+					height: 35px;
+					cursor: pointer;
+					#yourOnBlack, #yourOnWhite {
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						width: 50%;
+						border: 1px black solid;
+						&.selected {
+							border: 3px red double;
+						}
+					}
+					#yourOnBlack {
+						color: white;
+						background-color: black;
+					}
+					#yourOnWhite {
+						color: black;
+						background-color: white;
+					}
+				}
+				#intelligenceContainer {
+					display: flex;
+					flex-wrap: no-wrap;
+					#intelligence {
+						margin: 0 5px;
+					}
+				}
+				#setting2default {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					margin: 50px 0;
+					width: 150px;
+					height: 35px;
+					border: 1px black solid;
+					background-color: pink;
+					cursor: pointer;
+					&:hover {
+						color: white;
+						background-color: red;
+					}	
+				}
+				#resetButton {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					margin: 50px 0;
+					width: 150px;
+					height: 35px;
+					border: 1px black solid;
+					background-color: lightgray;
+					cursor: pointer;
+					&:hover {
+						color: white;
+						background-color: gray;
+					}
+				}
+				#settingWarning {
+					color: red;
+					margin: 25px 0;
+					&::before {
+						content: "!";
+						font-size: 20px;
+						font-weight: bold;
+						margin-right: 10px;
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+
+

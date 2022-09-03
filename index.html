@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>reversi-withBot (リバーシWITHボット)</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<div id="reversi">
+		<div id="mainFrame">
+			<div id="battlingField">
+				<div class="myImgBox"><img id="myImg" class="me" src="img/myImg.png" alt="プロフィール画面" /></div>
+				<div class="botImgBox"><img id="botImg" class="bot" alt="ロボット" src="img/myImg.png" /></div>
+				<div id="botProgressor"></div>
+			</div>
+			<div id="boardContainer">
+				<div id="board"></div>
+				<div id="onBoardAnnouncer">
+					<div id="resultContainer"></div>
+					<div id="startButton">START!</div>
+				</div>
+			</div>
+			<div id="annouceBoard"></div>
+		</div>
+		<div id="subFrame"></div>
+		<div id="infoRunner"></div>
+		<div id="settingFrame">
+			<img id="settingImg" src="img/setting.png" alt="設定" />
+			<div id="settingBox">
+				<div id="settingAdjuster">
+					<div class="title">あなたの色</div>
+					<div id="yourColorBox">
+						<div id="yourOnWhite">白(後手)</div>
+						<div id="yourOnBlack">黒(先手)</div>
+					</div>
+					<div class="title">ボットの強さ</div>
+					<div id="intelligenceContainer">
+						<div>弱</div>
+						<input id="intelligence" type="range" min="0" max="4" step="1" />
+						<div>強</div>
+					</div>
+					<div class="title">現在の状況を表示</div>
+					<div id="currentStatusContainer">
+						<label><input id="settingStatusOn" type="radio" name="currentStatus">表示</label>
+						<label><input type="radio" name="currentStatus">非表示</label>
+					</div>
+					<div class="title">ログの保持</div>
+					<div id="logHolderSettingContainer">
+						<label><input id="settingLogOn" type="radio" name="logHolerSelector">保持</label>
+						<label><input id="settingLogOff" type="radio" name="logHolerSelector">非保持</label>
+					</div>
+					<div class="title">ログバックボタンの表示</div>
+					<div id="logbackSettingButtonContainer">
+						<label><input type="radio" name="logbackButtonSelector">表示</label>
+						<label><input id="settingLogButtonOff" type="radio" name="logbackButtonSelector">非表示</label>
+					</div>
+					<div id="setting2default">設定を規定に戻す</div>
+					<div id="resetButton">ゲームをリセット</div>
+					<div id="settingWarning">ゲームをリセットするまで設定は反映されません。</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="functional.js"></script>
+	<script type="text/javascript" src="script.js"></script>
+</body>
+</html>
