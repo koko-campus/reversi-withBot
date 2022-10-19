@@ -1,0 +1,2 @@
+# reversi-withBot.js
+リバーシをプレイするJavaScriptプログラムです。
